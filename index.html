@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Camera Access Demo</title>
+<style>
+    /* Style to make the video fullscreen */
+    video {
+        width: 100%;
+        height: auto;
+    }
+</style>
+</head>
+<body>
+<!-- Video element to display the camera feed -->
+<video id="camera-feed" autoplay playsinline></video>
+
+<script>
+// Function to start the camera
+function startCamera() {
+    // Access the device's camera
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function(stream) {
+        // Display the camera feed in the video element
+        const videoElement = document.getElementById('camera-feed');
+        videoElement.srcObject = stream;
+    })
+    .catch(function(error) {
+        console.error('Error accessing the camera:', error);
+    });
+}
+
+// Call the startCamera function when the page is loaded
+window.onload = function() {
+    startCamera();
+};
+</script>
+</body>
+</html>
