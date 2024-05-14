@@ -13,15 +13,14 @@
 </style>
 </head>
 <body>
-    <h1>Hello</h1>
 <!-- Video element to display the camera feed -->
 <video id="camera-feed" autoplay playsinline></video>
 
 <script>
 // Function to start the camera
 function startCamera() {
-    // Access the device's camera
-    navigator.mediaDevices.getUserMedia({ video: true })
+    // Access the device's main (rear) camera
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: 'environment' } } })
     .then(function(stream) {
         // Display the camera feed in the video element
         const videoElement = document.getElementById('camera-feed');
