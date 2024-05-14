@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Camera Access Demo</title>
+<title>Object Detection Demo</title>
 <style>
     /* Style to make the video fullscreen */
     video {
@@ -16,36 +16,48 @@
 <!-- Video element to display the camera feed -->
 <video id="camera-feed" autoplay playsinline></video>
 
-<!-- Button to toggle between front and rear cameras -->
-<button onclick="toggleCamera()">Toggle Camera</button>
+<!-- Canvas to draw detected objects -->
+<canvas id="canvas"></canvas>
 
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd"></script>
 <script>
-let currentFacingMode = 'environment'; // Initial camera mode
-
 // Function to start the camera
-function startCamera() {
+async function startCamera() {
     // Access the device's camera
-    navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: currentFacingMode } } })
-    .then(function(stream) {
-        // Display the camera feed in the video element
-        const videoElement = document.getElementById('camera-feed');
-        videoElement.srcObject = stream;
-    })
-    .catch(function(error) {
-        console.error('Error accessing the camera:', error);
-    });
-}
-
-// Function to toggle between front and rear cameras
-function toggleCamera() {
-    currentFacingMode = (currentFacingMode === 'environment') ? 'user' : 'environment';
-    // Stop the current stream
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+    // Display the camera feed in the video element
     const videoElement = document.getElementById('camera-feed');
-    const stream = videoElement.srcObject;
-    const tracks = stream.getTracks();
-    tracks.forEach(track => track.stop());
-    // Start the new stream with the updated facing mode
-    startCamera();
+    videoElement.srcObject = stream;
+    
+    // Load the COCO-SSD model
+    const model = await cocoSsd.load();
+    
+    // Detect objects in the camera feed
+    videoElement.addEventListener('loadeddata', () => {
+        setInterval(async () => {
+            // Create a canvas element to draw the detected objects
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = videoElement.videoWidth;
+            canvas.height = videoElement.videoHeight;
+            
+            // Detect objects in the camera feed
+            const predictions = await model.detect(videoElement);
+            
+            // Draw the detected objects on the canvas
+            context.drawImage(videoElement, 0, 0);
+            predictions.forEach(prediction => {
+                context.beginPath();
+                context.rect(...prediction.bbox);
+                context.lineWidth = 2;
+                context.strokeStyle = 'red';
+                context.fillStyle = 'red';
+                context.stroke();
+                context.fillText(`${prediction.class} (${Math.round(prediction.score * 100)}%)`, prediction.bbox[0], prediction.bbox[1] > 10 ? prediction.bbox[1] - 5 : 10);
+            });
+        }, 1000); // Adjust the interval as needed
+    });
 }
 
 // Call the startCamera function when the page is loaded
