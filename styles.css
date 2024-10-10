@@ -1,71 +1,65 @@
-* {
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-  }
-  
-  body {
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 0;
     text-align: center;
-  }
-  
-  header h1 {
-    margin-bottom: 10px;
-  }
-  
-  header p {
-    margin-bottom: 20px;
-  }
-  
-  nav ul {
-    list-style: none;
-  }
-  
-  nav ul li {
-    display: inline-block;
-    margin: 0 15px;
-  }
-  
-  nav ul li a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  section {
-    padding: 50px 0;
-  }
-  
-  .container {
-    width: 80%;
-    margin: 0 auto;
-    text-align: center;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .service {
-    margin-bottom: 30px;
-  }
-  
-  footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-  }
-  
-  footer p {
+}
+
+/* Header Section */
+header {
+    background-color: #1e90ff; /* Dodger Blue */
+    color: #fff;
+    padding: 20px;
+}
+
+header h1 {
     margin: 0;
-  }
+    font-size: 2.5em;
+}
+
+header p {
+    margin-top: 10px;
+    font-size: 1.2em;
+}
+
+/* Content Section */
+.content {
+    padding: 40px;
+}
+
+.content h2 {
+    color: #1e90ff;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.social-links a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: inline-flex;
+    align-items: center;
+}
+
+.social-links img {
+    margin-right: 10px;
+}
+
+.social-links a:hover {
+    color: #4682b4; /* Steel Blue */
+}
+
+/* Footer Section */
+footer {
+    background-color: #4682b4; /* Steel Blue */
+    color: #fff;
+    padding: 20px;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+}
